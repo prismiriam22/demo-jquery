@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Rahmanisa Iswara & Priscilla Miriam S.</title>
+        <link rel="stylesheet" href="bootstrap.min.css">
+        <style>
+            body {
+                background-color: antiquewhite;
+            }
+            .table{
+                text-align: center;
+                background-color: rgb(204, 169, 169);
+                padding: 40px;
+                border-radius: 1-px;
+                border-color: rgb(81, 58, 58);
+                color: rgb(103, 20, 20);
+            }
+            form{
+                background-color: rgb(198, 160, 160);
+                padding: 30px;
+                border-radius: 40px;
+                margin-top: 40px;
+                color: white;
+            }
+            h1{
+                text-align: center;
+                color: rgb(103, 20, 20);
+                padding: 20px;
+            }
+            h2{
+                color: rgb(103, 20, 20);
+                text-align: center;
+                padding: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1> ARRAY ANTRIAN MAHASISWA</h1>
+        
+    <!-- Form Input  -->
+        <form id="myForm">
+            <div class="mb-3">
+                <label for="inputText" class="form-label">Title</label>
+                <input type="text" class="form-control" id="inputText" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="inputNumber" class="form-label">Angka</label>
+                <input type="number" class="form-control" id="inputNumber" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form><br>
+
+  <!-- Tabel Tampilan -->
+        <h2 id="resultTitle" class="title" style="display: none;">DATA LENGKAP ARRAY  MAHASISWA</h2>
+        <table id="resultTable" class="table" style="display: none;">
+            <thead>
+                <tr>
+                    <th scope="col">Angka</th>
+                    <th scope="col">Data</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+  
+    <!-- Javascript code -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $("#myForm").submit(function(event) {
+            event.preventDefault();
+            var inputText = $("#inputText").val();
+            var inputNumber = $("#inputNumber").val();
+            
+            $.ajax({
+                url: "process2.php",
+                type: "POST",
+                data: {
+                    text: inputText,
+                    number: inputNumber
+                },
+                dataType: "json",
+                success: function(response) {
+                    var tableBody = $("#resultTable tbody");
+                    tableBody.empty();
+                    
+                    for (var i = 0; i < response.length; i++) {
+                        var row = "<tr><td>" + (i+1) + "</td><td>" + response[i] + "</td></tr>";
+                        tableBody.append(row);
+                    }
+                    $("#resultTable").show();
+                    $("#resultTitle").show();
+                }
+            });
+        });
+    });
+    </script>
+    </body>
+</html>
